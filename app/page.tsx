@@ -87,7 +87,7 @@ export default function HomePage() {
         </section>
 
         <p className="relative z-10 text-center text-sm text-white/70">
-          Powered by <span className={`font-semibold ${neonBlue}`}>Rooster</span> — Be safe.
+          Made in <span className={`font-semibold ${neonBlue}`}>America</span> — Be safe.
         </p>
 
         <button
