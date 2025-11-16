@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-const neonBlue = "text-[#38a0ff]";
-const neonBlueBg = "bg-[#38a0ff]";
+const neonGreenText = "text-[#39ff14]";
+const neonGreenBg = "bg-[#39ff14]";
 
 const contact = {
   firstName: "Bruce",
@@ -42,62 +42,60 @@ export default function HomePage() {
   };
 
   return (
-    <main className="noise-surface flex min-h-screen items-center justify-center bg-[#0f1216] px-4 py-10 text-white">
-      <div className="card-3d relative flex w-full max-w-sm flex-col gap-6 rounded-3xl border border-white/10 bg-gradient-to-b from-[#1d242b] to-[#101419] p-6 text-left shadow-3xl">
-        <div className="absolute inset-3 rounded-2xl border border-white/5 pointer-events-none" />
-        <header className="relative z-10 flex flex-col gap-1">
-          <p className={`text-xs uppercase tracking-[0.3em] text-white/60 ${neonBlue}`}>
-            ISP Inc: Hire retired police officers
-          </p>
-          <h1 className="text-3xl font-semibold text-white">Bruce “Rooster” Johnson</h1>
-          <p className="text-sm text-white/70">Company: ISP Security Inc</p>
-        </header>
+    <>
+      <main className="noise-surface flex min-h-screen items-center justify-center bg-[#0f1216] px-4 py-10 text-white">
+        <div className="card-3d relative flex w-full max-w-sm flex-col gap-6 rounded-3xl border border-white/10 bg-gradient-to-b from-[#1d242b] to-[#101419] p-6 text-left shadow-3xl">
+          <div className="absolute inset-3 rounded-2xl border border-white/5 pointer-events-none" />
+          <header className="relative z-10 flex flex-col gap-1">
+            <h1 className="text-3xl font-semibold text-white">Bruce “Rooster” Johnson</h1>
+            <p className="text-sm text-white/70">Company: ISP Security Inc</p>
+          </header>
 
-        <section className="relative z-10 rounded-2xl border border-white/5 bg-white/5 p-4 backdrop-blur-sm">
-          <dl className="space-y-3 text-sm text-white">
-            <div className="flex flex-col">
-              <dt className="text-white/50">First Name</dt>
-              <dd className="text-lg font-medium">{contact.firstName}</dd>
-            </div>
-            <div className="flex flex-col">
-              <dt className="text-white/50">Last Name</dt>
-              <dd className="text-lg font-medium">{contact.lastName}</dd>
-            </div>
-            <div className="flex flex-col">
-              <dt className="text-white/50">AKA</dt>
-              <dd className={`text-lg font-semibold ${neonBlue}`}>{contact.aka}</dd>
-            </div>
-            <div className="flex flex-col">
-              <dt className="text-white/50">Phone</dt>
-              <dd className="text-lg font-semibold tracking-wide">
-                <a href={contact.phoneHref} className="hover:text-white">
-                  {contact.phone}
-                </a>
-              </dd>
-            </div>
-            <div className="flex flex-col">
-              <dt className="text-white/50">Email</dt>
-              <dd className="text-lg font-medium">
-                <a href={`mailto:${contact.email}`} className="hover:text-white">
-                  {contact.email}
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </section>
+          <section className="relative z-10 rounded-2xl border border-white/5 bg-white/5 p-4 backdrop-blur-sm">
+            <dl className="space-y-3 text-sm text-white">
+              <div className="flex flex-col">
+                <dt className="text-white/50">First Name</dt>
+                <dd className="text-lg font-medium">{contact.firstName}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-white/50">Last Name</dt>
+                <dd className="text-lg font-medium">{contact.lastName}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-white/50">AKA</dt>
+                <dd className={`text-lg font-semibold ${neonGreenText}`}>{contact.aka}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-white/50">Phone</dt>
+                <dd className="text-lg font-semibold tracking-wide">
+                  <a href={contact.phoneHref} className="hover:text-white">
+                    {contact.phone}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-white/50">Email</dt>
+                <dd className="text-lg font-medium">
+                  <a href={`mailto:${contact.email}`} className="hover:text-white">
+                    {contact.email}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </section>
 
-        <p className="relative z-10 text-center text-sm text-white/70">
-          Made in <span className={`font-semibold ${neonBlue}`}>America</span> — Be safe.
-        </p>
-
-        <button
-          type="button"
-          className={`relative z-10 flex items-center justify-center rounded-2xl ${neonBlueBg} px-4 py-3 text-base font-semibold uppercase tracking-wide text-[#050608] shadow-[0_15px_30px_rgba(56,160,255,0.35)] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white animate-jiggle`}
-          onClick={handleSaveContact}
-        >
-          Save Contact
-        </button>
-      </div>
-    </main>
+          <button
+            type="button"
+            className={`relative z-10 flex items-center justify-center rounded-2xl ${neonGreenBg} px-4 py-3 text-base font-semibold uppercase tracking-wide text-[#050608] shadow-[0_15px_30px_rgba(57,255,20,0.35)] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white animate-jiggle`}
+            onClick={handleSaveContact}
+          >
+            Save Contact
+          </button>
+        </div>
+      </main>
+      <footer className="bg-[#0f1216] py-4 text-center text-sm text-white/60">
+        Field Card Built in America, on Earth.
+      </footer>
+    </>
   );
 }
