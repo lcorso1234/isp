@@ -11,6 +11,7 @@ const contact = {
   company: "ISP Security Inc",
   phone: "708.305.4512",
   phoneHref: "tel:17083054512",
+  phoneNumber: "17083054512",
   email: "ispinc@hotmail.com"
 };
 
@@ -39,6 +40,13 @@ export default function HomePage() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+
+    // Trigger the native SMS composer with a prefilled meeting request
+    const smsBody = encodeURIComponent("Hey Bruce, let's schedule a meeting or a time to talk. Let me know what works for you.");
+    const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+    const separator = isIOS ? "&" : "?";
+    const smsUrl = `sms:${contact.phoneNumber}${separator}body=${smsBody}`;
+    window.location.href = smsUrl;
   };
 
   return (
@@ -46,43 +54,10 @@ export default function HomePage() {
       <main className="noise-surface flex min-h-screen items-center justify-center bg-[#0f1216] px-4 py-10 text-white">
         <div className="card-3d relative flex w-full max-w-sm flex-col gap-6 rounded-3xl border border-white/10 bg-gradient-to-b from-[#1d242b] to-[#101419] p-6 text-left shadow-3xl">
           <div className="absolute inset-3 rounded-2xl border border-white/5 pointer-events-none" />
-          <header className="relative z-10 flex flex-col gap-1">
+          <header className="relative z-10 flex flex-col items-center gap-1 text-center">
             <h1 className="text-3xl font-semibold text-white">Bruce “Rooster” Johnson</h1>
             <p className="text-sm text-white/70">Company: ISP Security Inc</p>
           </header>
-
-          <section className="relative z-10 rounded-2xl border border-white/5 bg-white/5 p-4 backdrop-blur-sm">
-            <dl className="space-y-3 text-sm text-white">
-              <div className="flex flex-col">
-                <dt className="text-white/50">First Name</dt>
-                <dd className="text-lg font-medium">{contact.firstName}</dd>
-              </div>
-              <div className="flex flex-col">
-                <dt className="text-white/50">Last Name</dt>
-                <dd className="text-lg font-medium">{contact.lastName}</dd>
-              </div>
-              <div className="flex flex-col">
-                <dt className="text-white/50">AKA</dt>
-                <dd className={`text-lg font-semibold ${neonGreenText}`}>{contact.aka}</dd>
-              </div>
-              <div className="flex flex-col">
-                <dt className="text-white/50">Phone</dt>
-                <dd className="text-lg font-semibold tracking-wide">
-                  <a href={contact.phoneHref} className="hover:text-white">
-                    {contact.phone}
-                  </a>
-                </dd>
-              </div>
-              <div className="flex flex-col">
-                <dt className="text-white/50">Email</dt>
-                <dd className="text-lg font-medium">
-                  <a href={`mailto:${contact.email}`} className="hover:text-white">
-                    {contact.email}
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </section>
 
           <button
             type="button"
