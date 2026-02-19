@@ -10,7 +10,10 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #05070a;
+  background:
+    radial-gradient(circle at 10% 5%, rgba(255, 255, 255, 0.05), transparent 34%),
+    radial-gradient(circle at 85% 90%, rgba(57, 255, 20, 0.08), transparent 34%),
+    linear-gradient(180deg, #202831 0%, #151b21 100%);
 }
 
 body {
@@ -28,6 +31,17 @@ body {
   isolation: isolate;
 }
 
+.noise-surface::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.05), transparent 30%),
+    linear-gradient(320deg, rgba(255, 255, 255, 0.03), transparent 30%);
+  z-index: -2;
+}
+
 .noise-surface::after {
   content: "";
   position: fixed;
@@ -40,36 +54,37 @@ body {
 }
 
 .card-3d {
+  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow:
-    0 35px 60px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 34px 60px rgba(6, 10, 14, 0.7),
+    0 12px 20px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .shadow-3xl {
   box-shadow:
-    0 15px 30px rgba(0, 0, 0, 0.6),
-    0 5px 15px rgba(0, 0, 0, 0.4);
+    0 18px 30px rgba(7, 11, 15, 0.55),
+    0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 @keyframes jiggle {
   0%,
+  82%,
   100% {
-    transform: rotate(-1deg) translateY(0);
-  }
-  20% {
-    transform: rotate(1deg) translateY(-1px);
-  }
-  40% {
-    transform: rotate(-1deg) translateY(0);
-  }
-  60% {
-    transform: rotate(1deg) translateY(-1px);
-  }
-  80% {
     transform: rotate(0deg) translateY(0);
+  }
+  86% {
+    transform: rotate(-1.2deg) translateY(-1px);
+  }
+  90% {
+    transform: rotate(1deg) translateY(0);
+  }
+  94% {
+    transform: rotate(-0.8deg) translateY(-1px);
   }
 }
 
 .animate-jiggle {
-  animation: jiggle 1.5s ease-in-out infinite;
+  animation: jiggle 3.4s ease-in-out infinite;
 }
