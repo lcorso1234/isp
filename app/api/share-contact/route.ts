@@ -1,6 +1,11 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
 
 const maxVCardLineLength = 75;
+const contactPhotoFilePath = path.join(process.cwd(), "public", "isp.png");
+let cachedPhotoLine = "";
+let hasTriedLoadingPhoto = false;
 
 const foldVCardLine = (line: string) => {
   if (line.length <= maxVCardLineLength) {
@@ -40,7 +45,23 @@ const getSafeFileName = (fullName: string) => {
   return `${baseName || "contact-card"}.vcf`;
 };
 
-export function GET(request: NextRequest) {
+const getContactPhotoLine = async () => {
+  if (hasTriedLoadingPhoto) {
+    return cachedPhotoLine;
+  }
+
+  hasTriedLoadingPhoto = true;
+  try {
+    const imageBuffer = await readFile(contactPhotoFilePath);
+    cachedPhotoLine = foldVCardLine(`PHOTO;ENCODING=b;TYPE=PNG:${imageBuffer.toString("base64")}`);
+  } catch {
+    cachedPhotoLine = "";
+  }
+
+  return cachedPhotoLine;
+};
+
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const fullName = sanitizeValue(searchParams.get("name") ?? "Website Contact");
   const email = sanitizeValue(searchParams.get("email") ?? "");
@@ -56,12 +77,14 @@ export function GET(request: NextRequest) {
   const { firstName, lastName } = splitName(fullName);
   const normalizedPhone = normalizePhone(phone);
   const nowIso = new Date().toISOString();
+  const contactPhotoLine = await getContactPhotoLine();
   const vcardLines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
     "PRODID:-//ISP Security//Field Card//EN",
     `N:${lastName};${firstName};;;`,
     `FN:${fullName}`,
+    ...(contactPhotoLine ? [contactPhotoLine] : []),
     foldVCardLine(`TEL;TYPE=CELL,VOICE:${normalizedPhone}`),
     foldVCardLine(`EMAIL;TYPE=INTERNET:${email}`),
     `REV:${nowIso}`,

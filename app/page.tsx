@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 const neonGreenBg = "bg-[#39ff14]";
 const contactPhotoPath = "/isp.png";
 const maxVCardLineLength = 75;
-const mobileUserAgentPattern = /iPhone|iPad|iPod|Android/i;
 
 // Contact data. Add/remove as needed.
 const contacts = [
@@ -24,6 +23,7 @@ export default function HomePage() {
   const contact = contacts[0];
   const [isSavingContact, setIsSavingContact] = useState(false);
   const [showSmsPrompt, setShowSmsPrompt] = useState(false);
+  const [smsFirstName, setSmsFirstName] = useState("");
   const [smsEmail, setSmsEmail] = useState("");
   const [smsPhone, setSmsPhone] = useState("");
   const [smsError, setSmsError] = useState("");
@@ -65,11 +65,12 @@ export default function HomePage() {
     return { photoBase64, photoType };
   };
 
-  const buildSmsBody = (email: string, phone: string, shareableContactUrl: string) => {
+  const buildSmsBody = (firstName: string, email: string, phone: string, shareableContactUrl: string) => {
     const userAgent = navigator.userAgent;
     const isSamsung = /SamsungBrowser|SAMSUNG|SM-/i.test(userAgent);
     const lines = [
       "Hi Bruce, here is my contact info:",
+      ...(firstName ? [`First name: ${firstName}`] : []),
       `Email: ${email}`,
       `Phone: ${phone}`,
       `Tap to save my contact card: ${shareableContactUrl}`,
@@ -127,9 +128,7 @@ export default function HomePage() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      if (mobileUserAgentPattern.test(navigator.userAgent)) {
-        setShowSmsPrompt(true);
-      }
+      setShowSmsPrompt(true);
     } finally {
       setIsSavingContact(false);
     }
@@ -138,6 +137,7 @@ export default function HomePage() {
   const handleOpenSms = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const firstName = smsFirstName.trim();
     const email = smsEmail.trim();
     const phone = smsPhone.trim();
 
@@ -149,12 +149,12 @@ export default function HomePage() {
     setSmsError("");
     const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
     const shareableContactParams = new URLSearchParams({
-      name: "Website Contact",
+      name: firstName || "Website Contact",
       email,
       phone
     });
     const shareableContactUrl = `${window.location.origin}/api/share-contact?${shareableContactParams.toString()}`;
-    const smsBody = encodeURIComponent(buildSmsBody(email, phone, shareableContactUrl));
+    const smsBody = encodeURIComponent(buildSmsBody(firstName, email, phone, shareableContactUrl));
     const separator = isIOS ? "&" : "?";
     const smsUrl = `sms:${contact.phoneNumber}${separator}body=${smsBody}`;
 
@@ -187,6 +187,19 @@ export default function HomePage() {
                   Want to text Bruce your contact details? Fill this out and your SMS app will open.
                 </p>
                 <form className="mt-3 flex flex-col gap-3" onSubmit={handleOpenSms}>
+                  <label className="text-xs uppercase tracking-wide text-white/70" htmlFor="sms-first-name">
+                    First Name (Optional)
+                  </label>
+                  <input
+                    id="sms-first-name"
+                    type="text"
+                    autoComplete="given-name"
+                    value={smsFirstName}
+                    onChange={(event) => setSmsFirstName(event.target.value)}
+                    className="rounded-xl border border-white/20 bg-[#0d1318] px-3 py-2 text-sm text-white outline-none transition focus:border-[#39ff14] focus:ring-2 focus:ring-[#39ff14]/35"
+                    placeholder="John"
+                  />
+
                   <label className="text-xs uppercase tracking-wide text-white/70" htmlFor="sms-email">
                     Your Email
                   </label>
